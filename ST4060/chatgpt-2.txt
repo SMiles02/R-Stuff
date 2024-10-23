@@ -1,0 +1,28 @@
+Let's go through the questions in parts and address each one with an explanation.
+
+### (a) What is the standard deviation of function \( K(u) \)?
+- Here, \( K(u) \) represents a kernel function, often used in kernel density estimation. A typical kernel function is the **Gaussian kernel** \( K(u) = \frac{1}{\sqrt{2\pi}} \exp\left( -\frac{u^2}{2} \right) \), but the question doesn't explicitly specify this.
+- Without derivation, we recognize that \( K(u) \) could be a distribution like the standard normal, for which the standard deviation is **1**.
+
+### (b) What is the standard deviation of function \( K_h(u) = K(u/h)/h \)?
+- Here, \( K_h(u) \) is a scaled version of the kernel function with bandwidth \( h \). This scaling affects the standard deviation.
+- In kernel density estimation, scaling \( u \) by \( h \) affects the spread of the distribution. For a normal distribution \( K(u) \), the standard deviation of \( K_h(u) \) becomes **\( h \)** because the kernel is scaled horizontally by \( h \), and the variance scales by \( h^2 \), so the standard deviation becomes \( h \).
+
+### (c) Can \( K(u) = \exp(-u^2/2) \) be used to compute this estimate? Why?
+- Yes, this kernel function can be used. This is the **Gaussian kernel**, a common choice for kernel density estimation due to its smoothness and properties.
+- It integrates to 1 (a property required for kernels), is symmetric, and provides good smoothing for many practical applications. Thus, it's appropriate for estimating the probability density function.
+
+### (d) Which value of \( h \) should be used to ensure a finite-sample estimate with minimal bias?
+We are given two choices:
+- \( h_1 = 1.06 \hat{\sigma} N^{-1/5} \)
+- \( h_2 = 2.34 \hat{\sigma} N^{-1/5} \)
+
+This question refers to bandwidth selection in kernel density estimation. Bandwidth \( h \) controls the trade-off between **bias** and **variance**:
+- **Smaller \( h \)** leads to more variance (overfitting the data).
+- **Larger \( h \)** leads to more bias (smoothing too much and losing detail).
+
+Generally, the optimal bandwidth is chosen to minimize the **Mean Squared Error (MSE)**, which is a combination of bias and variance. In practice:
+- **\( h_1 \)** is derived from **Silverman’s rule of thumb**, a commonly used heuristic for selecting bandwidth in Gaussian kernel density estimation. It provides a balance between bias and variance, particularly in finite samples.
+- **\( h_2 \)** seems larger, which would oversmooth the data and potentially introduce higher bias.
+
+Therefore, **\( h_1 \)** is the better choice, as it is designed to minimize both bias and variance for kernel density estimation with a Gaussian kernel, ensuring a more accurate estimate of the probability density function.

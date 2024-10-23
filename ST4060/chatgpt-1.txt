@@ -1,0 +1,39 @@
+The error occurs because there seems to be a problem with how the loops are structured, leading to issues when trying to plot the results. Specifically, the inner loop (for `i in 1:M`) is not properly indented, which makes it fall outside the outer loop (for `p in Ps`). This causes unexpected behavior in the way the means and variances are collected.
+
+Let me suggest a corrected version of the code:
+
+```r
+# Monte Carlo illustration of Le Cam’s Theorem
+N = 100
+M = 1000
+Ps = seq(.1, .9, by = .1)
+set.seed(4060)
+
+means = vars = matrix(0, nrow=M, ncol=length(Ps))  # Initialize matrices for means and variances
+
+for (j in 1:length(Ps)) {
+  p = Ps[j]
+  m = v = numeric(M)
+  
+  for (i in 1:M) {
+    X = matrix(rbinom(5 * N, 1, p), nrow = N, ncol = 5)  # Simulate the binomial trials
+    S = apply(X, 1, sum)  # Sum each row
+    m[i] = mean(S)        # Mean of S
+    v[i] = var(S)         # Variance of S
+  }
+  
+  means[, j] = m
+  vars[, j] = v
+}
+
+boxplot(means, names = Ps, col = 'cyan')
+abline(h = 5 * Ps, col = 8)
+```
+
+### Key Changes:
+1. The second `for` loop is now correctly nested inside the first loop.
+2. `means` and `vars` are initialized as matrices with dimensions `M x length(Ps)` to store the Monte Carlo results.
+3. The `means` and `vars` are updated column by column, corresponding to each `p` in `Ps`.
+4. The boxplot now works since `means` is correctly structured.
+
+This should resolve the error and give you a boxplot illustrating the results for different probabilities `p`. Let me know if it works!
