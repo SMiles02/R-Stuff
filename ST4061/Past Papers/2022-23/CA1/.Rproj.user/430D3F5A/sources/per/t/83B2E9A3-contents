@@ -1,0 +1,11 @@
+set.seed(4061)
+
+library(ISLR)
+library(gbm)
+library(randomForest)
+
+x.train = Khan$xtrain
+x.test = Khan$xtest
+y.train = as.factor(Khan$ytrain)
+y.test = as.factor(Khan$ytest)
+

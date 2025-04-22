@@ -1,0 +1,33 @@
+require(ISLR)
+require(glmnet)
+
+dat = na.omit(Hitters)
+dat$Salary = log(dat$Salary)
+x = model.matrix(Salary~.+0, data=dat)
+y = dat$Salary
+n = nrow(x)
+K = 10
+crit1 = crit2 = crit3 = crit4 = numeric(K)
+folds = cut(1:n,K,labels=FALSE)
+set.seed(1)
+for(k in 1:K){
+	i.train = which(folds!=k)
+	x.train = x[i.train,]
+	y.train = y[i.train]
+	x.test = x[-i.train,]
+	y.test = y[-i.train]
+	mod1 = glmnet(x.train,y.train,alpha=0.5)
+	out = cv.glmnet(x.train,y.train,alpha=0.5)
+	mod2 = glmnet(x.train,y.train,alpha=0.5,
+				lambda=out$lambda.min)
+	f1 = predict(mod1,newx=x.train)[,1]
+	f2 = predict(mod2,newx=x.train)[,1]
+	p1 = predict(mod1,newx=x.test)[,1]
+	p2 = predict(mod2,newx=x.test)[,1]
+	crit1[k] = mean((f1-y.train)^2)
+	crit2[k] = mean((f2-y.train)^2)
+	crit3[k] = mean((p1-y.test)^2)
+	crit4[k] = mean((p2-y.test)^2)
+}
+par(font=2, font.axis=2, font.lab=2, pch=20)
+boxplot(cbind(crit1,crit2,crit3,crit4))

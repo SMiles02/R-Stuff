@@ -1,0 +1,18 @@
+library(MASS)
+library(caret)
+ca.train = read.csv("ca_train.csv",stringsAsFactors=TRUE)
+ca.test = read.csv("ca_test.csv",stringsAsFactors=TRUE)
+
+# 1
+lda.o = lda(y~., data=ca.train)
+lda.p = predict(lda.o, newdata=ca.test)$class
+(ltb = confusionMatrix(lda.p, ca.test$y)$table)
+
+# 2
+qda.o = lda(y~., data=ca.train)
+qda.p = predict(qda.o, newdata=ca.test)$class
+(qtb = confusionMatrix(qda.p, ca.test$y)$table)
+
+# 3
+ltb[1, 1] / sum(ltb[, 1])
+qtb[1, 1] / sum(qtb[, 1])
